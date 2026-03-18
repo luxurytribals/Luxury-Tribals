@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Luxury Tribals Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:wght@400;600&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#090909;--panel:#151515;--text:#f6f1df;--gold:#c9a84c;--line:#2f2f2f}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:'Cormorant Garamond'}h1,h2,h3{font-family:'Cinzel Decorative'}button,input,select,textarea{font-family:'Rajdhani'}
+    .wrap{max-width:1200px;margin:auto;padding:20px}.hidden{display:none}.login{max-width:420px;margin:8vh auto;background:var(--panel);padding:20px;border:1px solid var(--line)}
+    .tabs button{margin-right:8px;background:none;border:1px solid var(--gold);color:var(--gold);padding:8px 10px}.tab{padding:20px 0}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:var(--panel);padding:12px;border:1px solid var(--line)}
+    table{width:100%;border-collapse:collapse}th,td{border:1px solid var(--line);padding:8px}.modal{position:fixed;inset:0;background:#0009;display:none;place-items:center}.modal.show{display:grid}.box{background:#121212;border:1px solid #333;max-width:700px;width:96%;padding:16px;max-height:90vh;overflow:auto}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section id="login" class="login">
+      <h2>Admin Login</h2><input id="email" value="admin@luxurytribals.in" placeholder="Email"><input id="password" type="password" placeholder="Password"><button id="loginBtn">Login</button><p id="loginMsg"></p>
+    </section>
+
+    <section id="app" class="hidden">
+      <h1>Luxury Tribals Admin</h1>
+      <div class="tabs"><button data-tab="dashboard">Dashboard</button><button data-tab="orders">Orders</button><button data-tab="products">Products</button><button data-tab="customers">Customers</button><button data-tab="settings">Settings</button></div>
+      <div id="dashboard" class="tab"><div class="grid4" id="stats"></div><div class="card"><h3>7-day Revenue</h3><div id="chart"></div></div><div class="grid4"><div class="card"><h3>Recent Orders</h3><table><tbody id="recentOrders"></tbody></table></div><div class="card"><h3>Top Products</h3><table><tbody id="topProducts"></tbody></table></div></div></div>
+      <div id="orders" class="tab hidden"><select id="statusFilter"><option value="">All</option><option>paid</option><option>processing</option><option>shipped</option><option>delivered</option></select><input id="orderSearch" placeholder="Search"><table><thead><tr><th>ID</th><th>Customer</th><th>Status</th><th>Total</th><th>Actions</th></tr></thead><tbody id="ordersBody"></tbody></table></div>
+      <div id="products" class="tab hidden"><button id="addProduct">+ Add Product</button><table><thead><tr><th>Thumb</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead><tbody id="productsBody"></tbody></table></div>
+      <div id="customers" class="tab hidden"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>City</th><th>Total Orders</th><th>Total Spent</th><th>Last Order</th></tr></thead><tbody id="customersBody"></tbody></table></div>
+      <div id="settings" class="tab hidden"><div class="card"><h3>Store</h3><input placeholder="Store name"><input placeholder="Support email"></div><div class="card"><h3>Razorpay</h3><input placeholder="Key ID"><input placeholder="Key Secret"></div><div class="card"><h3>Shiprocket</h3><input placeholder="Email"><input placeholder="Password"></div><div class="card"><h3>Change Admin Password</h3><input placeholder="Current" type="password"><input placeholder="New" type="password"><button>Save</button></div></div>
+    </section>
+  </div>
+
+  <div id="modal" class="modal"><div class="box"><div id="modalBody"></div><button onclick="modal.classList.remove('show')">Close</button></div></div>
+  <script src="api.js"></script>
+  <script>
+    const t=()=>localStorage.getItem('lt_admin_token');
+    const show=(id)=>document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('hidden',x.id!==id));
+    document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>show(b.dataset.tab));
+    loginBtn.onclick=async()=>{try{const res=await API.auth.login({email:email.value,password:password.value});localStorage.setItem('lt_admin_token',res.token);login.classList.add('hidden');app.classList.remove('hidden');loadAll();}catch(e){loginMsg.textContent=e.message}};
+
+    async function loadAll(){
+      const dash=await API.admin.dashboard().catch(()=>({stats:{totalRevenue:0,totalOrders:0,productsLive:0,pendingShipments:0},revenue7d:[],recentOrders:[],topProducts:[]}));
+      stats.innerHTML=[['Total Revenue',dash.stats.totalRevenue],['Total Orders',dash.stats.totalOrders],['Products Live',dash.stats.productsLive],['Pending Shipments',dash.stats.pendingShipments]].map(s=>`<div class='card'><h3>${s[0]}</h3><p>₹${s[1]}</p></div>`).join('');
+      chart.innerHTML=dash.revenue7d.map(d=>`<div style='display:flex;align-items:center;gap:8px'><small>${d.date}</small><div style='height:10px;background:#c9a84c;width:${Math.max(10,d.revenue/100)}px'></div><small>₹${d.revenue}</small></div>`).join('');
+      recentOrders.innerHTML=dash.recentOrders.map(o=>`<tr><td>${o.orderId}</td><td>${o.customerName}</td><td>${o.status}</td></tr>`).join('');
+      topProducts.innerHTML=dash.topProducts.map(p=>`<tr><td>${p.name}</td><td>${p.soldCount}</td></tr>`).join('');
+
+      const orders=(await API.orders.list().catch(()=>({orders:[]}))).orders;
+      const renderOrders=()=>{const q=orderSearch.value.toLowerCase();const f=statusFilter.value;ordersBody.innerHTML=orders.filter(o=>(!f||o.status===f)&&JSON.stringify(o).toLowerCase().includes(q)).map(o=>`<tr><td>${o.orderId}</td><td>${o.shippingAddress?.name||''}</td><td><select onchange='setStatus("${o._id}",this.value)'>${['paid','processing','shipped','delivered'].map(s=>`<option ${o.status===s?'selected':''}>${s}</option>`).join('')}</select></td><td>₹${o.amount}</td><td><button onclick='viewOrder(${JSON.stringify(o)})'>View</button></td></tr>`).join('');};
+      window.setStatus=async(id,status)=>{await API.orders.updateStatus(id,{status});loadAll()};
+      window.viewOrder=(o)=>{modalBody.innerHTML=`<h3>${o.orderId}</h3><pre>${JSON.stringify(o,null,2)}</pre><button onclick='retryShip("${o.orderId}")'>Ship</button>`; modal.classList.add('show')};
+      window.retryShip=async(orderId)=>{await API.shipping.reship(orderId).catch(()=>alert('Reship queued'));};
+      statusFilter.onchange=orderSearch.oninput=renderOrders; renderOrders();
+
+      const prods=await API.products.list().catch(()=>({products:[]}));
+      productsBody.innerHTML=(prods.products||prods).map(p=>`<tr><td><div style='width:40px'>${p.emoji||'🎨'}</div></td><td>${p.name}</td><td>${p.category}</td><td>${p.price}</td><td><input type='checkbox' ${p.inStock?'checked':''} onchange='toggleStock("${p._id}",this.checked)'></td><td><button onclick='editP(${JSON.stringify(p)})'>Edit</button><button onclick='delP("${p._id}")'>Delete</button></td></tr>`).join('');
+      window.toggleStock=(id,v)=>API.products.toggleStock(id,v);
+      window.delP=async(id)=>{await API.products.remove(id);loadAll()};
+      window.editP=(p)=>openProductModal(p);
+      addProduct.onclick=()=>openProductModal();
+
+      const customers=(await API.customers.list().catch(()=>({customers:[]}))).customers||[];
+      customersBody.innerHTML=customers.map(c=>`<tr><td>${c.name}</td><td>${c.email}</td><td>${c.phone}</td><td>${c.city}</td><td>${c.totalOrders}</td><td>₹${c.totalSpent}</td><td>${new Date(c.lastOrderDate).toLocaleDateString()}</td></tr>`).join('');
+    }
+
+    function openProductModal(p={}){modalBody.innerHTML=`<h3>${p._id?'Edit':'Add'} Product</h3><form id='pForm'>
+      <input name='name' placeholder='name' value='${p.name||''}'><input name='subtitle' placeholder='subtitle' value='${p.subtitle||''}'>
+      <input name='price' placeholder='price' value='${p.price||''}'><input name='originalPrice' placeholder='original price' value='${p.originalPrice||''}'>
+      <input name='category' placeholder='category' value='${p.category||''}'><textarea name='description' placeholder='description'>${p.description||''}</textarea>
+      <input name='sizes' placeholder='sizes comma separated' value='${(p.sizes||[]).join(',')}'><input name='badge' placeholder='badge' value='${p.badge||''}'>
+      <input name='emoji' placeholder='emoji' value='${p.emoji||''}'><input name='svgAccentColor' placeholder='#c9a84c' value='${p.svgAccentColor||''}'>
+      <textarea name='features' placeholder='features one per line'>${(p.features||[]).join('\n')}</textarea><textarea name='imageUrls' placeholder='image urls one per line'>${(p.imageUrls||[]).join('\n')}</textarea>
+      <input name='weight' placeholder='weight' value='${p.weight||''}'><label><input type='checkbox' name='inStock' ${p.inStock?'checked':''}> In Stock</label>
+      <button>Save</button></form>`; modal.classList.add('show');
+      pForm.onsubmit=async(e)=>{e.preventDefault();const fd=Object.fromEntries(new FormData(pForm));fd.sizes=fd.sizes.split(',').map(s=>s.trim()).filter(Boolean);fd.features=fd.features.split('\n').filter(Boolean);fd.imageUrls=fd.imageUrls.split('\n').filter(Boolean);fd.inStock=!!fd.inStock;
+        p._id?await API.products.update(p._id,fd):await API.products.create(fd); modal.classList.remove('show'); loadAll();}
+    }
+
+    if(t()){login.classList.add('hidden');app.classList.remove('hidden');loadAll();}
+  </script>
+</body></html>

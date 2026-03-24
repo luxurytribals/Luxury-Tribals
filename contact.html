@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Luxury Tribals</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:wght@400;500;700&family=Rajdhani:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#0a0a0a; --panel:#151515; --text:#f6f1df; --muted:#c9c3b2; --gold:#c9a84c; }
+    *{box-sizing:border-box} body{margin:0;font-family:'Cormorant Garamond',serif;background:var(--bg);color:var(--text);line-height:1.8}
+    h1,h2,h3{font-family:'Cinzel Decorative',serif;color:var(--gold)}
+    button,input,select,textarea{font-family:'Rajdhani',sans-serif}
+    .container{max-width:1000px;margin:0 auto;padding:40px 20px}
+    nav{background:#0a0a0add;backdrop-filter:blur(6px);border-bottom:1px solid #2b2b2b;padding:14px 0;position:sticky;top:0;z-index:10}
+    .nav-wrap{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center}
+    .brand{font-size:26px;color:var(--gold);text-decoration:none}
+    .back-btn{background:transparent;border:1px solid #555;color:var(--muted);padding:8px 16px;cursor:pointer;text-decoration:none;border-radius:4px;transition:all .2s}
+    .back-btn:hover{border-color:var(--gold);color:var(--gold)}
+    .layout{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:32px}
+    .panel{background:var(--panel);padding:24px;border:1px solid #2a2a2a;border-radius:8px}
+    form{display:flex;flex-direction:column;gap:16px}
+    label{display:block;color:var(--gold);font-weight:600;margin-bottom:6px;font-size:14px}
+    input,textarea{width:100%;padding:12px;background:#0f0f0f;border:1px solid #333;color:var(--text);font-size:15px;border-radius:4px;transition:border-color .2s}
+    input:focus,textarea:focus{outline:none;border-color:var(--gold)}
+    textarea{resize:vertical;min-height:150px}
+    .btn{background:var(--gold);color:#111;border:none;padding:12px 20px;cursor:pointer;font-weight:700;border-radius:4px;transition:transform .2s;font-size:16px}
+    .btn:hover{transform:translateY(-2px)}
+    .contact-info{display:flex;flex-direction:column;gap:24px}
+    .contact-item{display:flex;align-items:start;gap:16px}
+    .icon{font-size:24px;color:var(--gold);min-width:32px;text-align:center}
+    .social-links{display:flex;gap:16px;margin-top:8px}
+    .social-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:#1a1a1a;border:1px solid #333;color:var(--text);text-decoration:none;border-radius:6px;transition:all .2s}
+    .social-btn:hover{border-color:var(--gold);color:var(--gold)}
+    @media(max-width:768px){.layout{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-wrap">
+      <a href="index.html" class="brand">Luxury Tribals</a>
+      <a href="index.html" class="back-btn">← Back to Home</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Contact Us</h1>
+    <p>Have a question or need assistance? We're here to help! Reach out to us through any of the following channels.</p>
+
+    <div class="layout">
+      <div class="panel">
+        <h2 style="margin-top:0">Send Us a Message</h2>
+        <form id="contactForm">
+          <div>
+            <label>Your Name *</label>
+            <input type="text" name="name" required placeholder="Enter your full name">
+          </div>
+          <div>
+            <label>Email Address *</label>
+            <input type="email" name="email" required placeholder="your.email@example.com">
+          </div>
+          <div>
+            <label>Phone Number</label>
+            <input type="tel" name="phone" placeholder="Optional">
+          </div>
+          <div>
+            <label>Subject *</label>
+            <input type="text" name="subject" required placeholder="What is this regarding?">
+          </div>
+          <div>
+            <label>Message *</label>
+            <textarea name="message" required placeholder="Tell us how we can help you..."></textarea>
+          </div>
+          <button type="submit" class="btn">Send Message</button>
+        </form>
+      </div>
+
+      <div>
+        <div class="panel">
+          <h2 style="margin-top:0">Contact Information</h2>
+          <div class="contact-info">
+            <div class="contact-item">
+              <div class="icon">📧</div>
+              <div>
+                <h3 style="margin:0 0 4px 0">Email</h3>
+                <p style="margin:0;color:var(--muted)">luxurytribals@gmail.com</p>
+                <p style="margin:4px 0 0 0;font-size:14px">We respond within 24 hours</p>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="icon">📍</div>
+              <div>
+                <h3 style="margin:0 0 4px 0">Location</h3>
+                <p style="margin:0;color:var(--muted)">Pune, Maharashtra, India</p>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="icon">⏰</div>
+              <div>
+                <h3 style="margin:0 0 4px 0">Business Hours</h3>
+                <p style="margin:0;color:var(--muted)">Monday - Saturday: 10 AM - 6 PM IST</p>
+                <p style="margin:4px 0 0 0;font-size:14px">Closed on Sundays and public holidays</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:20px">
+          <h2 style="margin-top:0">Follow Us</h2>
+          <p style="margin-bottom:16px;color:var(--muted)">Stay connected with us on social media for updates, new arrivals, and exclusive offers.</p>
+          <div class="social-links">
+            <a href="https://www.instagram.com/luxurytribals" target="_blank" class="social-btn">
+              <span style="font-size:20px">📷</span>
+              <span>Instagram</span>
+            </a>
+            <a href="https://x.com/luxurytribals" target="_blank" class="social-btn">
+              <span style="font-size:20px">🐦</span>
+              <span>Twitter</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('contactForm').onsubmit = (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+      
+      // In production, this would send to backend
+      // For now, just show success message
+      alert('Thank you for contacting us! We will get back to you within 24 hours.');
+      
+      // Reset form
+      e.target.reset();
+    };
+  </script>
+</body>
+</html>

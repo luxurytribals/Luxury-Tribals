@@ -1,12 +1,12 @@
 {
   "name": "luxury-tribals-backend",
   "version": "1.0.0",
-  "main": "src/server.js",
-  "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
-    "seed": "node src/config/seed.js"
-  },
+  "main": "backend/src/server.js",
+"scripts": {
+    "start": "node backend/src/server.js",
+    "dev": "nodemon backend/src/server.js",
+    "seed": "node backend/src/config/seed.js"
+},
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.6",

@@ -4,8 +4,9 @@ services:
     env: node
     region: singapore
     plan: free
-    buildCommand: cd backend && npm install
-    startCommand: cd backend && npm start
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
@@ -32,6 +33,6 @@ services:
       - key: SHIPROCKET_PASSWORD
         sync: false
       - key: STORE_NAME
-        value: Luxury Tribals Primary Warehouse
+        value: Home PRIMARY
       - key: FRONTEND_URL
         sync: false

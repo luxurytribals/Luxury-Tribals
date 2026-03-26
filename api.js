@@ -1,5 +1,5 @@
 (() => {
-  const BASE_URL = () => window.LT_API_URL || 'http://localhost:5000/api';
+  const BASE_URL = () => window.LT_API_URL || 'https://luxury-tribals-backend.onrender.com/api';
 
   const request = async (path, options = {}, admin = false) => {
     const token = localStorage.getItem('lt_admin_token');

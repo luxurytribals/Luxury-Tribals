@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:wght@400;500;700&family=Rajdhani:wght@500;600&display=swap" rel="stylesheet">
+  <!-- REAL RAZORPAY SDK -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
     :root { --bg:#0a0a0a; --panel:#151515; --text:#f6f1df; --muted:#c9c3b2; --gold:#c9a84c; --red:#8b1a1a; }
     *{box-sizing:border-box} body{margin:0;font-family:'Cormorant Garamond',serif;background:var(--bg);color:var(--text);background-image:linear-gradient(rgba(201,168,76,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.07)1px,transparent 1px);background-size:32px 32px}
@@ -30,23 +32,17 @@
     .cart{position:fixed;right:-420px;top:0;width:380px;max-width:100%;height:100%;background:#111;border-left:1px solid #333;transition:.3s;z-index:20;padding:20px;overflow:auto}.cart.open{right:0}
     .thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.thumb,.heroimg{background:#1d1d1d;padding:8px;border:1px solid #333;position:relative}
     .thumb:hover{border-color:var(--gold);transform:scale(1.05);transition:all .2s}
-    
-    /* IMAGE NAVIGATION ARROWS */
     .image-nav{position:absolute;top:0;bottom:0;width:50px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3);opacity:0;transition:opacity .3s,background .3s;cursor:pointer;z-index:5}
     .image-nav:hover{background:rgba(0,0,0,0.6);opacity:1}
     .image-nav.left{left:0}.image-nav.right{right:0}
     .heroimg:hover .image-nav{opacity:0.7}
     .image-nav svg{width:24px;height:24px;fill:var(--gold)}
-    
-    /* STAR RATING */
     .stars{display:inline-flex;gap:2px;align-items:center}
     .star{color:#666;font-size:18px}
     .star.filled{color:var(--gold)}
     .rating-summary{display:flex;align-items:center;gap:8px;margin:8px 0}
     .rating-number{color:var(--gold);font-weight:600;font-size:18px}
     .review-count{color:var(--muted);font-size:14px}
-    
-    /* REVIEWS SECTION */
     .reviews-section{margin-top:30px;padding-top:30px;border-top:1px solid #2a2a2a}
     .review{background:#0f0f0f;padding:16px;margin-bottom:12px;border-radius:6px;border:1px solid #1a1a1a}
     .review-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
@@ -54,7 +50,6 @@
     .review-date{color:var(--muted);font-size:12px}
     .review-text{color:var(--text);line-height:1.6;font-size:14px}
     .review-stars{margin-bottom:6px}
-    
     .footer{border-top:1px solid #333;padding:60px 0 30px 0;background:#0f0f0f}
     .footer-content{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:40px;margin-bottom:40px}
     .footer-section h3{font-family:'Cinzel Decorative';color:var(--gold);margin-bottom:16px}
@@ -65,8 +60,6 @@
     .social-link:hover{background:var(--gold);color:#000;transform:translateY(-3px)}
     .footer-bottom{text-align:center;padding-top:30px;border-top:1px solid #333;color:var(--muted);font-size:14px}
     .modal{position:fixed;inset:0;background:#000a;display:none;place-items:center;z-index:30}.modal.show{display:grid}.modal-box{background:#111;border:1px solid #333;padding:20px;max-width:520px}
-    
-    /* IMPROVED FORM STYLING */
     form{display:flex;flex-direction:column;gap:16px}
     form label{display:block;color:var(--gold);font-weight:600;margin-bottom:6px;font-size:14px;letter-spacing:0.5px}
     form input, form select{width:100%;padding:10px 12px;background:#0f0f0f;border:1px solid #333;color:var(--text);font-size:15px;border-radius:4px;transition:border-color .2s}
@@ -75,7 +68,7 @@
     .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
     .back-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid #555;color:var(--muted);padding:8px 12px;cursor:pointer;margin-bottom:16px;font-size:14px;transition:all .2s}
     .back-btn:hover{border-color:var(--gold);color:var(--gold)}
-    
+    .pay-loading{text-align:center;padding:20px;color:var(--muted)}
     @media(max-width:900px){.layout{grid-template-columns:1fr}.features-strip{grid-template-columns:1fr 1fr}.form-row{grid-template-columns:1fr}}
   </style>
 </head>
@@ -127,17 +120,14 @@
                 <input required type="email" name="email" placeholder="your.email@example.com">
               </div>
             </div>
-
             <div>
               <label>Phone Number *</label>
               <input required name="phone" placeholder="10-digit mobile number" maxlength="10">
             </div>
-
             <div>
               <label>Address Line 1 *</label>
               <input required name="address1" placeholder="House no., Building name, Street">
             </div>
-
             <div class="form-row">
               <div>
                 <label>Address Line 2</label>
@@ -148,7 +138,6 @@
                 <input name="landmark" placeholder="Nearby landmark (optional)">
               </div>
             </div>
-
             <div class="form-row">
               <div>
                 <label>City *</label>
@@ -161,17 +150,14 @@
                 </select>
               </div>
             </div>
-
             <div>
               <label>Pincode *</label>
               <input required name="pincode" placeholder="6-digit pincode" maxlength="6">
             </div>
-
             <div style="background:#1a1a1a;padding:12px;border-radius:4px;margin-top:8px">
               <p style="margin:0;font-size:14px;color:var(--muted)"><strong>Payment:</strong> Razorpay only. Orders are shipped via Shiprocket once payment is verified.</p>
             </div>
-
-            <button class="btn" type="submit" style="margin-top:8px">Pay with Razorpay →</button>
+            <button class="btn" type="submit" id="payBtn" style="margin-top:8px">Pay with Razorpay →</button>
           </form>
         </div>
         <aside class="panel sticky">
@@ -201,7 +187,6 @@
             <a href="https://x.com/luxurytribals" target="_blank" class="social-link" title="Twitter">🐦</a>
           </div>
         </div>
-        
         <div class="footer-section">
           <h3>Quick Links</h3>
           <a href="index.html">Home</a>
@@ -209,14 +194,12 @@
           <a href="contact.html">Contact Us</a>
           <a href="shipping.html">Shipping Info</a>
         </div>
-        
         <div class="footer-section">
           <h3>Policies</h3>
           <a href="terms.html">Terms & Conditions</a>
           <a href="privacy.html">Privacy Policy</a>
           <a href="shipping.html">Shipping & Delivery</a>
         </div>
-        
         <div class="footer-section">
           <h3>Contact</h3>
           <p>📧 luxurytribals@gmail.com</p>
@@ -224,12 +207,12 @@
           <p>⏰ Mon-Sat: 10 AM - 6 PM IST</p>
         </div>
       </div>
-      
       <div class="footer-bottom">
         <p>© 2026 Luxury Tribals · Wear the Ancient Soul · All Rights Reserved</p>
       </div>
     </div>
   </footer>
+
   <aside id="cart" class="cart">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
       <h3 style="margin:0">Cart</h3>
@@ -239,7 +222,6 @@
     <p id="shipMsg"></p>
     <button class="btn" data-page="checkout">Go to Checkout</button>
   </aside>
-  <div id="payModal" class="modal"><div class="modal-box"><h3>Razorpay Simulation</h3><p id="payText"></p><p><small>In production, this calls Razorpay Orders API and opens Razorpay Checkout popup.</small></p><button id="closePay" class="btn">Close</button></div></div>
 
   <!-- Review Form Modal -->
   <div id="reviewModal" class="modal">
@@ -275,14 +257,12 @@
   <script src="api.js"></script>
   <script>
     const IN_STATES = ['Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chhattisgarh','Goa','Gujarat','Haryana','Himachal Pradesh','Jharkhand','Karnataka','Kerala','Madhya Pradesh','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Odisha','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura','Uttar Pradesh','Uttarakhand','West Bengal','Andaman and Nicobar Islands','Chandigarh','Dadra and Nagar Haveli and Daman and Diu','Delhi','Jammu and Kashmir','Ladakh','Lakshadweep','Puducherry'];
-    let products = []; // Will be loaded from API
+    let products = [];
     
-    // Load products from API
     async function loadProducts() {
       try {
         const response = await API.products.list();
         products = response.products || response || [];
-        // Convert API products to match frontend format
         products = products.map(p => ({
           id: p._id,
           name: p.name,
@@ -293,50 +273,42 @@
           sizes: p.sizes || ['S', 'M', 'L', 'XL'],
           emoji: p.emoji || '🎨',
           accent: p.svgAccentColor || '#c9a84c',
-          colors: [['Default', '#f4ecd3']],
+          colors: p.colors && p.colors.length > 0 ? p.colors.map(c => [c.name, c.hex]) : [['Default', '#f4ecd3']],
           desc: p.description || p.subtitle || '',
           features: p.features || [],
           imageUrls: p.imageUrls || [],
-          rating: p.rating || 4.5, // Average rating out of 5
+          rating: p.rating || 4.5,
           reviewCount: p.reviewCount || 0,
-          reviews: p.reviews || [] // Array of review objects
+          reviews: p.reviews || []
         }));
         renderHome();
         renderShop();
       } catch (error) {
         console.error('Failed to load products:', error);
-        products = []; // Empty array if API fails
+        products = [];
       }
     }
     
     const makePattern = (p) => {
-      // If product has real images, use the first one
       if (p.imageUrls && p.imageUrls.length > 0) {
         return `<img src="${p.imageUrls[0]}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;border-radius:4px">`;
       }
-      // Otherwise use SVG pattern
       const c = p.accent || '#c9a84c';
       return `<svg viewBox='0 0 200 200'><circle cx='100' cy='100' r='70' fill='none' stroke='${c}'/><circle cx='100' cy='100' r='45' fill='none' stroke='${c}'/><polygon points='100,30 130,100 100,170 70,100' fill='none' stroke='${c}'/><line x1='20' y1='100' x2='180' y2='100' stroke='${c}'/></svg>`;
     };
     
-    // Helper function to render star rating
     const renderStars = (rating, size = 18) => {
       const fullStars = Math.floor(rating);
       const hasHalfStar = rating % 1 >= 0.5;
       let stars = '';
       for (let i = 0; i < 5; i++) {
-        if (i < fullStars) {
-          stars += `<span class="star filled" style="font-size:${size}px">★</span>`;
-        } else if (i === fullStars && hasHalfStar) {
-          stars += `<span class="star filled" style="font-size:${size}px">⯨</span>`;
-        } else {
-          stars += `<span class="star" style="font-size:${size}px">★</span>`;
-        }
+        if (i < fullStars) stars += `<span class="star filled" style="font-size:${size}px">★</span>`;
+        else if (i === fullStars && hasHalfStar) stars += `<span class="star filled" style="font-size:${size}px">⯨</span>`;
+        else stars += `<span class="star" style="font-size:${size}px">★</span>`;
       }
       return `<div class="stars">${stars}</div>`;
     };
     
-    // Helper function to render reviews
     const renderReviews = (reviews) => {
       if (!reviews || reviews.length === 0) {
         return '<p style="color:var(--muted);font-style:italic">No reviews yet. Be the first to review this product!</p>';
@@ -356,14 +328,15 @@
     let cart = JSON.parse(localStorage.getItem('lt_cart')||'[]'); 
     let currentProduct = null;
     let currentImageIndex = 0;
-    const saveCart=()=>localStorage.setItem('lt_cart',JSON.stringify(cart));
-    const inr=n=>`₹${n.toLocaleString('en-IN')}`;
-    const card=(p)=>`<article class='card'><div>${makePattern(p)}</div><p><span class='badge'>${p.badge}</span></p><h3>${p.name} ${p.emoji}</h3><p>${p.desc}</p><div style="margin:8px 0">${renderStars(p.rating || 4.5, 16)}<span style="color:var(--muted);font-size:13px;margin-left:6px">(${p.reviewCount || 0})</span></div><p class='price'>${inr(p.price)} ${p.was?`<span class='old'>${inr(p.was)}</span>`:''}</p><button class='btn' onclick='openProduct("${p.id}")'>View</button></article>`;
-    const renderHome=()=>featured.innerHTML=products.slice(0,3).map(card).join('');
-    const renderShop=(f='all')=>shopGrid.innerHTML=products.filter(p=>f==='all'||p.tag===f).map(card).join('');
-    const openPage=(id)=>document.querySelectorAll('.page').forEach(p=>p.classList.toggle('hidden',p.id!==id));
-    const renderProduct=(p)=>{
-      currentProduct=p;
+    const saveCart = () => localStorage.setItem('lt_cart', JSON.stringify(cart));
+    const inr = n => `₹${n.toLocaleString('en-IN')}`;
+    const card = (p) => `<article class='card'><div>${makePattern(p)}</div><p><span class='badge'>${p.badge}</span></p><h3>${p.name} ${p.emoji}</h3><p>${p.desc}</p><div style="margin:8px 0">${renderStars(p.rating || 4.5, 16)}<span style="color:var(--muted);font-size:13px;margin-left:6px">(${p.reviewCount || 0})</span></div><p class='price'>${inr(p.price)} ${p.was?`<span class='old'>${inr(p.was)}</span>`:''}</p><button class='btn' onclick='openProduct("${p.id}")'>View</button></article>`;
+    const renderHome = () => featured.innerHTML = products.slice(0,3).map(card).join('');
+    const renderShop = (f='all') => shopGrid.innerHTML = products.filter(p=>f==='all'||p.tag===f).map(card).join('');
+    const openPage = (id) => document.querySelectorAll('.page').forEach(p=>p.classList.toggle('hidden',p.id!==id));
+    
+    const renderProduct = (p) => {
+      currentProduct = p;
       currentImageIndex = 0;
       const hasMultipleImages = p.imageUrls && p.imageUrls.length > 1;
       const mainImage = makePattern(p);
@@ -375,160 +348,164 @@
           <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
         </div>
       ` : '';
-      
       const thumbs = p.imageUrls && p.imageUrls.length > 0 
-        ? p.imageUrls.slice(0, 4).map((url, idx) => `<div class='thumb' onclick='changeMainImage(${idx})' style='cursor:pointer'><img src="${url}" style="width:100%;height:100%;object-fit:cover;border-radius:4px"></div>`).join('')
+        ? p.imageUrls.slice(0,4).map((url,idx)=>`<div class='thumb' onclick='changeMainImage(${idx})' style='cursor:pointer'><img src="${url}" style="width:100%;height:100%;object-fit:cover;border-radius:4px"></div>`).join('')
         : Array(4).fill(0).map(()=>`<div class='thumb'>${makePattern(p)}</div>`).join('');
-      
-      const ratingHtml = `
-        <div class="rating-summary">
-          ${renderStars(p.rating || 4.5, 22)}
-          <span class="rating-number">${(p.rating || 4.5).toFixed(1)}</span>
-          <span class="review-count">(${p.reviewCount || 0} reviews)</span>
-        </div>
-      `;
-      
-      const reviewsHtml = `
-        <div class="reviews-section">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-            <h3>Customer Reviews</h3>
-            <button class="btn" onclick="openReviewForm()">Write a Review</button>
-          </div>
-          ${renderReviews(p.reviews)}
-        </div>
-      `;
-      
-      productDetail.innerHTML=`<div class='layout'><div><div class='heroimg' id='mainProductImage' style="position:relative">${mainImage}${navArrows}</div><div class='thumbs'>${thumbs}</div></div><div class='panel'><h2>${p.name}</h2>${ratingHtml}<p>${p.desc}</p><p class='price'>${inr(p.price)}</p><label>Colors</label><div class='swatches'>${p.colors.map((c,i)=>`<button class='swatch ${i===0?'active':''}' style='background:${c[1]}' title='${c[0]}' onclick='selectColor(this)'></button>`).join('')}</div><label>Size</label><div class='sizes'>${p.sizes.map((s,i)=>`<button class='size ${i===0?'active':''}' onclick='selectSize(this)'>${s}</button>`).join('')}</div><p>Features</p><ul>${p.features.map(f=>`<li>${f}</li>`).join('')}</ul><button class='btn' onclick='addToCart("${p.id}")'>Add to Cart</button> <button class='btn alt' onclick='buyNow("${p.id}")'>Buy Now</button>${reviewsHtml}</div></div>`;
+      const ratingHtml = `<div class="rating-summary">${renderStars(p.rating||4.5,22)}<span class="rating-number">${(p.rating||4.5).toFixed(1)}</span><span class="review-count">(${p.reviewCount||0} reviews)</span></div>`;
+      const reviewsHtml = `<div class="reviews-section"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>Customer Reviews</h3><button class="btn" onclick="openReviewForm()">Write a Review</button></div>${renderReviews(p.reviews)}</div>`;
+      productDetail.innerHTML = `<div class='layout'><div><div class='heroimg' id='mainProductImage' style="position:relative">${mainImage}${navArrows}</div><div class='thumbs'>${thumbs}</div></div><div class='panel'><h2>${p.name}</h2>${ratingHtml}<p>${p.desc}</p><p class='price'>${inr(p.price)}</p><label>Colors</label><div class='swatches'>${p.colors.map((c,i)=>`<button class='swatch ${i===0?'active':''}' style='background:${c[1]}' title='${c[0]}' onclick='selectColor(this)'></button>`).join('')}</div><label>Size</label><div class='sizes'>${p.sizes.map((s,i)=>`<button class='size ${i===0?'active':''}' onclick='selectSize(this)'>${s}</button>`).join('')}</div><p>Features</p><ul>${p.features.map(f=>`<li>${f}</li>`).join('')}</ul><button class='btn' onclick='addToCart("${p.id}")'>Add to Cart</button> <button class='btn alt' onclick='buyNow("${p.id}")'>Buy Now</button>${reviewsHtml}</div></div>`;
       openPage('product');
     };
     
-    // Function to select size
-    window.selectSize = (btn) => {
-      document.querySelectorAll('.size').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    };
-    
-    // Function to select color
-    window.selectColor = (btn) => {
-      document.querySelectorAll('.swatch').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    };
-    
-    // Function to change main image when clicking thumbnails
+    window.selectSize = (btn) => { document.querySelectorAll('.size').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); };
+    window.selectColor = (btn) => { document.querySelectorAll('.swatch').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); };
     window.changeMainImage = (index) => {
       if (!currentProduct || !currentProduct.imageUrls || !currentProduct.imageUrls[index]) return;
       currentImageIndex = index;
       const mainImageEl = document.getElementById('mainProductImage');
       if (mainImageEl) {
         const hasMultipleImages = currentProduct.imageUrls && currentProduct.imageUrls.length > 1;
-        const navArrows = hasMultipleImages ? `
-          <div class="image-nav left" onclick="prevImage()">
-            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-          </div>
-          <div class="image-nav right" onclick="nextImage()">
-            <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
-          </div>
-        ` : '';
+        const navArrows = hasMultipleImages ? `<div class="image-nav left" onclick="prevImage()"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div><div class="image-nav right" onclick="nextImage()"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>` : '';
         mainImageEl.innerHTML = `<img src="${currentProduct.imageUrls[index]}" alt="${currentProduct.name}" style="width:100%;height:100%;object-fit:cover;border-radius:4px">${navArrows}`;
       }
     };
+    window.nextImage = () => { if (!currentProduct||!currentProduct.imageUrls||currentProduct.imageUrls.length<=1) return; currentImageIndex=(currentImageIndex+1)%currentProduct.imageUrls.length; changeMainImage(currentImageIndex); };
+    window.prevImage = () => { if (!currentProduct||!currentProduct.imageUrls||currentProduct.imageUrls.length<=1) return; currentImageIndex=(currentImageIndex-1+currentProduct.imageUrls.length)%currentProduct.imageUrls.length; changeMainImage(currentImageIndex); };
+    const openProduct = (id) => renderProduct(products.find(p=>p.id===id)); window.openProduct=openProduct;
+    const addToCart = (id) => { const item=cart.find(c=>c.id===id); item?item.qty++:cart.push({id,qty:1,size:(products.find(p=>p.id===id).sizes[0])}); saveCart(); renderCart(); }; window.addToCart=addToCart;
+    const buyNow = (id) => { addToCart(id); openPage('checkout'); renderSummary(); }; window.buyNow=buyNow;
+    const renderCart = () => { cartItems.innerHTML=cart.map(c=>{const p=products.find(x=>x.id===c.id);return `<div class='card'><strong>${p.name}</strong><p>${inr(p.price)}</p><button onclick='qty("${c.id}",-1)'>-</button> ${c.qty} <button onclick='qty("${c.id}",1)'>+</button></div>`}).join('')||'<p>Cart empty.</p>'; const total=cart.reduce((a,c)=>a+products.find(p=>p.id===c.id).price*c.qty,0); shipMsg.textContent=total>999?'Free shipping unlocked!':'Add items worth ₹'+(1000-total)+' more for free shipping.'; };
+    const qty = (id,d) => { const i=cart.find(c=>c.id===id); if(!i)return; i.qty+=d; if(i.qty<=0)cart=cart.filter(c=>c.id!==id); saveCart(); renderCart(); renderSummary(); }; window.qty=qty;
+    const renderSummary = () => { const items=cart.map(c=>{const p=products.find(x=>x.id===c.id);return `<p>${p.name} x${c.qty} — ${inr(p.price*c.qty)}</p>`}).join(''); const total=cart.reduce((a,c)=>a+products.find(p=>p.id===c.id).price*c.qty,0); summary.innerHTML=items+`<hr><h3>Total: ${inr(total)}</h3>`; };
     
-    // Navigate to next image
-    window.nextImage = () => {
-      if (!currentProduct || !currentProduct.imageUrls || currentProduct.imageUrls.length <= 1) return;
-      currentImageIndex = (currentImageIndex + 1) % currentProduct.imageUrls.length;
-      changeMainImage(currentImageIndex);
-    };
-    
-    // Navigate to previous image
-    window.prevImage = () => {
-      if (!currentProduct || !currentProduct.imageUrls || currentProduct.imageUrls.length <= 1) return;
-      currentImageIndex = (currentImageIndex - 1 + currentProduct.imageUrls.length) % currentProduct.imageUrls.length;
-      changeMainImage(currentImageIndex);
-    };
-    const openProduct=(id)=>renderProduct(products.find(p=>p.id===id)); window.openProduct=openProduct;
-    const addToCart=(id)=>{const item=cart.find(c=>c.id===id); item?item.qty++:cart.push({id,qty:1,size:(products.find(p=>p.id===id).sizes[0])}); saveCart(); renderCart();}; window.addToCart=addToCart;
-    const buyNow=(id)=>{addToCart(id); openPage('checkout'); renderSummary();}; window.buyNow=buyNow;
-    const renderCart=()=>{cartItems.innerHTML=cart.map(c=>{const p=products.find(x=>x.id===c.id);return `<div class='card'><strong>${p.name}</strong><p>${inr(p.price)}</p><button onclick='qty("${c.id}",-1)'>-</button> ${c.qty} <button onclick='qty("${c.id}",1)'>+</button></div>`}).join('')||'<p>Cart empty.</p>'; const total=cart.reduce((a,c)=>a+products.find(p=>p.id===c.id).price*c.qty,0); shipMsg.textContent= total>999?'Free shipping unlocked!':'Add items worth ₹'+(1000-total)+' more for free shipping.'};
-    const qty=(id,d)=>{const i=cart.find(c=>c.id===id); if(!i)return; i.qty+=d; if(i.qty<=0) cart=cart.filter(c=>c.id!==id); saveCart(); renderCart(); renderSummary();}; window.qty=qty;
-    const renderSummary=()=>{const items=cart.map(c=>{const p=products.find(x=>x.id===c.id);return `<p>${p.name} x${c.qty} — ${inr(p.price*c.qty)}</p>`}).join(''); const total=cart.reduce((a,c)=>a+products.find(p=>p.id===c.id).price*c.qty,0); summary.innerHTML=items+`<hr><h3>Total: ${inr(total)}</h3>`};
     document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>{openPage(b.dataset.page); if(b.dataset.page==='checkout')renderSummary();});
     document.getElementById('cartBtn').onclick=()=>document.getElementById('cart').classList.toggle('open');
     document.querySelectorAll('.filter').forEach(b=>b.onclick=()=>renderShop(b.dataset.filter));
     IN_STATES.forEach(s=>stateSelect.insertAdjacentHTML('beforeend',`<option>${s}</option>`));
-    checkoutForm.onsubmit=async(e)=>{e.preventDefault(); if(!cart.length)return alert('Cart is empty'); const form=Object.fromEntries(new FormData(checkoutForm)); const amount=cart.reduce((a,c)=>a+products.find(p=>p.id===c.id).price*c.qty,0); const orderId='LT'+Date.now(); payText.textContent=`Order ID: ${orderId} | Amount: ${inr(amount)}`; payModal.classList.add('show');
-      let attempt=0; const poll=()=>{attempt++; const awb=attempt>2?'AWB'+Math.floor(Math.random()*999999):''; if(awb||attempt===10){openPage('success'); successMessage.textContent=`Thanks ${form.name}! AWB: ${awb||'Pending allocation'} | Courier: Shiprocket Auto | ETA: ${new Date(Date.now()+6*86400000).toDateString()}`; cart=[]; saveCart(); renderCart(); return;} setTimeout(poll,5000)}; setTimeout(poll,1000);
+
+    // =============================================
+    // REAL RAZORPAY PAYMENT INTEGRATION
+    // =============================================
+    checkoutForm.onsubmit = async (e) => {
+      e.preventDefault();
+      if (!cart.length) return alert('Your cart is empty!');
+      
+      const form = Object.fromEntries(new FormData(checkoutForm));
+      const payBtn = document.getElementById('payBtn');
+      
+      // Disable button and show loading
+      payBtn.disabled = true;
+      payBtn.textContent = 'Processing...';
+      
+      try {
+        // Step 1: Create order on backend
+        const orderData = await API.payments.createOrder({
+          items: cart.map(c => ({
+            productId: c.id,
+            qty: c.qty,
+            size: c.size || 'M'
+          })),
+          shippingAddress: {
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            address1: form.address1,
+            address2: form.address2 || '',
+            landmark: form.landmark || '',
+            city: form.city,
+            state: form.state,
+            pincode: form.pincode
+          }
+        });
+
+        // Step 2: Open Razorpay checkout popup
+        const options = {
+          key: orderData.key,
+          amount: orderData.amount,
+          currency: 'INR',
+          name: 'Luxury Tribals',
+          description: 'Premium Tribal Art T-Shirts',
+          image: 'https://luxurytribals.github.io/Luxury-Tribals/images/logo.jpeg',
+          order_id: orderData.razorpayOrderId,
+          prefill: {
+            name: orderData.prefill.name,
+            email: orderData.prefill.email,
+            contact: orderData.prefill.contact
+          },
+          theme: { color: '#c9a84c' },
+          handler: async (response) => {
+            // Step 3: Verify payment on backend
+            try {
+              await API.payments.verify({
+                razorpayOrderId: response.razorpay_order_id,
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpaySignature: response.razorpay_signature
+              });
+              
+              // Payment successful!
+              openPage('success');
+              successMessage.innerHTML = `
+                <strong>Thank you, ${form.name}!</strong><br><br>
+                🎉 Your order <strong>${orderData.orderId}</strong> has been placed successfully!<br><br>
+                📦 We are processing your shipment via Shiprocket.<br>
+                📧 You will receive tracking details shortly at <strong>${form.email}</strong>.<br><br>
+                <em>Estimated delivery: 5-7 business days</em>
+              `;
+              cart = [];
+              saveCart();
+              renderCart();
+            } catch (verifyError) {
+              alert('Payment verification failed. Please contact support with your payment ID: ' + response.razorpay_payment_id);
+            }
+          },
+          modal: {
+            ondismiss: () => {
+              payBtn.disabled = false;
+              payBtn.textContent = 'Pay with Razorpay →';
+            }
+          }
+        };
+        
+        const rzp = new Razorpay(options);
+        rzp.on('payment.failed', (response) => {
+          alert('Payment failed: ' + response.error.description);
+          payBtn.disabled = false;
+          payBtn.textContent = 'Pay with Razorpay →';
+        });
+        rzp.open();
+
+      } catch (error) {
+        console.error('Order creation failed:', error);
+        alert('Failed to create order: ' + error.message + '\n\nPlease try again.');
+        payBtn.disabled = false;
+        payBtn.textContent = 'Pay with Razorpay →';
+      }
     };
-    closePay.onclick=()=>payModal.classList.remove('show');
-    
+
     // Review form functionality
     let selectedRating = 0;
-    
-    window.openReviewForm = () => {
-      selectedRating = 0;
-      document.querySelectorAll('.review-star').forEach(star => star.style.color = '#666');
-      document.getElementById('reviewName').value = '';
-      document.getElementById('reviewText').value = '';
-      document.getElementById('reviewModal').classList.add('show');
-    };
-    
-    window.closeReviewForm = () => {
-      document.getElementById('reviewModal').classList.remove('show');
-    };
-    
-    window.setReviewRating = (rating) => {
-      selectedRating = rating;
-      document.querySelectorAll('.review-star').forEach((star, index) => {
-        star.style.color = index < rating ? 'var(--gold)' : '#666';
-      });
-    };
-    
+    window.openReviewForm = () => { selectedRating=0; document.querySelectorAll('.review-star').forEach(star=>star.style.color='#666'); document.getElementById('reviewName').value=''; document.getElementById('reviewText').value=''; document.getElementById('reviewModal').classList.add('show'); };
+    window.closeReviewForm = () => { document.getElementById('reviewModal').classList.remove('show'); };
+    window.setReviewRating = (rating) => { selectedRating=rating; document.querySelectorAll('.review-star').forEach((star,index)=>{star.style.color=index<rating?'var(--gold)':'#666';}); };
     document.getElementById('reviewForm').onsubmit = (e) => {
       e.preventDefault();
-      
-      if (selectedRating === 0) {
-        alert('Please select a rating!');
-        return;
-      }
-      
-      const name = document.getElementById('reviewName').value;
-      const text = document.getElementById('reviewText').value;
-      
+      if (selectedRating===0) return alert('Please select a rating!');
+      const name=document.getElementById('reviewName').value;
+      const text=document.getElementById('reviewText').value;
       if (!currentProduct) return;
-      
-      // Initialize reviews array if it doesn't exist
-      if (!currentProduct.reviews) {
-        currentProduct.reviews = [];
-      }
-      
-      // Add new review
-      const newReview = {
-        name: name,
-        rating: selectedRating,
-        text: text,
-        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-      };
-      
-      currentProduct.reviews.unshift(newReview); // Add to beginning
-      
-      // Update review count and average rating
-      currentProduct.reviewCount = (currentProduct.reviewCount || 0) + 1;
-      const totalRating = currentProduct.reviews.reduce((sum, r) => sum + r.rating, 0);
-      currentProduct.rating = totalRating / currentProduct.reviews.length;
-      
-      // Update the product in the products array
-      const productIndex = products.findIndex(p => p.id === currentProduct.id);
-      if (productIndex !== -1) {
-        products[productIndex] = currentProduct;
-      }
-      
-      // Close modal and refresh product display
+      if (!currentProduct.reviews) currentProduct.reviews=[];
+      currentProduct.reviews.unshift({ name, rating:selectedRating, text, date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) });
+      currentProduct.reviewCount=(currentProduct.reviewCount||0)+1;
+      const totalRating=currentProduct.reviews.reduce((sum,r)=>sum+r.rating,0);
+      currentProduct.rating=totalRating/currentProduct.reviews.length;
+      const productIndex=products.findIndex(p=>p.id===currentProduct.id);
+      if (productIndex!==-1) products[productIndex]=currentProduct;
       closeReviewForm();
       alert('Thank you for your review! ⭐');
-      renderProduct(currentProduct); // Refresh the product page to show new review
+      renderProduct(currentProduct);
     };
-    
-    // Initialize: Load products from API
+
+    // Initialize
     loadProducts().then(() => {
       IN_STATES.forEach(s=>stateSelect.insertAdjacentHTML('beforeend',`<option>${s}</option>`));
       renderCart();

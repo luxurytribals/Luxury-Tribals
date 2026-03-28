@@ -6,14 +6,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:wght@400;600&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
   <style>
-    :root{--bg:#090909;--panel:#151515;--text:#f6f1df;--gold:#c9a84c;--line:#2f2f2f}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:'Cormorant Garamond'}h1,h2,h3{font-family:'Cinzel Decorative'}button,input,select,textarea{font-family:'Rajdhani'}
+    :root{--bg:#090909;--panel:#151515;--text:#f6f1df;--gold:#c9a84c;--line:#2f2f2f;--red:#8b1a1a;--muted:#c9c3b2}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:'Cormorant Garamond'}h1,h2,h3{font-family:'Cinzel Decorative'}button,input,select,textarea{font-family:'Rajdhani'}
     .wrap{max-width:1200px;margin:auto;padding:20px}.hidden{display:none}.login{max-width:420px;margin:8vh auto;background:var(--panel);padding:30px;border:1px solid var(--line);border-radius:8px}
     .tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}.tabs button{background:none;border:1px solid var(--gold);color:var(--gold);padding:10px 16px;cursor:pointer;transition:all .2s;border-radius:4px}.tabs button:hover,.tabs button.active{background:var(--gold);color:#000}
     .tab{padding:20px 0}.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}.card{background:var(--panel);padding:16px;border:1px solid var(--line);border-radius:6px}
     table{width:100%;border-collapse:collapse;margin-top:16px}th,td{border:1px solid var(--line);padding:10px;text-align:left}th{background:#1a1a1a;font-weight:600}
     .modal{position:fixed;inset:0;background:#000c;display:none;place-items:center;z-index:100}.modal.show{display:grid}.box{background:#121212;border:1px solid #333;max-width:700px;width:96%;padding:20px;max-height:90vh;overflow:auto;border-radius:8px}
-    
-    /* IMPROVED FORM STYLING */
     .form-group{margin-bottom:16px}.form-group label{display:block;color:var(--gold);font-weight:600;margin-bottom:6px;font-size:14px;letter-spacing:0.5px}
     .form-group input, .form-group select, .form-group textarea{width:100%;padding:10px 12px;background:#0f0f0f;border:1px solid #333;color:var(--text);font-size:15px;border-radius:4px;transition:border-color .2s}
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus{outline:none;border-color:var(--gold)}
@@ -23,8 +21,8 @@
     .btn-danger{background:#8b1a1a;color:var(--text)}.btn-secondary{background:#333;color:var(--text)}
     .header-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--line)}
     .logout-btn{background:transparent;border:1px solid #555;color:var(--muted);padding:8px 14px;cursor:pointer;border-radius:4px;font-size:14px;transition:all .2s}.logout-btn:hover{border-color:var(--red);color:var(--red)}
-    .password-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);padding:6px;transition:color .2s;width:30px;height:30px;display:flex;align-items:center;justify-content:center}.password-toggle:hover{color:var(--gold)}
-    
+    .success-msg{background:#1a3a1a;border:1px solid #2d6a2d;color:#6fcf6f;padding:12px;border-radius:4px;margin-top:12px;display:none}
+    .error-msg{background:#3a1a1a;border:1px solid #6a2d2d;color:#cf6f6f;padding:12px;border-radius:4px;margin-top:12px;display:none}
     @media(max-width:768px){.grid4{grid-template-columns:1fr 1fr}.form-row{grid-template-columns:1fr}}
   </style>
 </head>
@@ -99,75 +97,39 @@
       </div>
 
       <div id="settings" class="tab hidden">
-        <div class="card" style="margin-bottom:20px">
-          <h3 style="margin-top:0">Store Settings</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Store Name</label>
-              <input placeholder="Luxury Tribals">
-            </div>
-            <div class="form-group">
-              <label>Support Email</label>
-              <input placeholder="support@luxurytribals.in" type="email">
-            </div>
-          </div>
-        </div>
-
-        <div class="card" style="margin-bottom:20px">
-          <h3 style="margin-top:0">Razorpay Configuration</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Razorpay Key ID</label>
-              <input placeholder="rzp_test_xxxxx" type="text">
-            </div>
-            <div class="form-group">
-              <label>Razorpay Key Secret</label>
-              <input placeholder="Secret key" type="password">
-            </div>
-          </div>
-        </div>
-
-        <div class="card" style="margin-bottom:20px">
-          <h3 style="margin-top:0">Shiprocket Configuration</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Shiprocket Email</label>
-              <input placeholder="your@email.com" type="email">
-            </div>
-            <div class="form-group">
-              <label>Shiprocket Password</label>
-              <input placeholder="Password" type="password">
-            </div>
-          </div>
-        </div>
-
+        <!-- CHANGE ADMIN PASSWORD -->
         <div class="card">
           <h3 style="margin-top:0">Change Admin Password</h3>
           <div class="form-group">
             <label>Current Password</label>
             <div style="position:relative">
               <input placeholder="Enter current password" type="password" id="currentPass" style="padding-right:45px">
-              <button type="button" onclick="toggleSettingsPassword('currentPass', this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;padding:6px;transition:color .2s;width:30px;height:30px;display:flex;align-items:center;justify-content:center" title="Show password">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                  <circle cx="12" cy="12" r="3"></circle>
-                </svg>
+              <button type="button" onclick="toggleSettingsPassword('currentPass', this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);padding:6px;width:30px;height:30px;display:flex;align-items:center;justify-content:center" title="Show password">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
               </button>
             </div>
           </div>
           <div class="form-group">
-            <label>New Password</label>
+            <label>New Password (min 8 characters)</label>
             <div style="position:relative">
-              <input placeholder="Enter new password (min 8 characters)" type="password" id="newPass" style="padding-right:45px">
-              <button type="button" onclick="toggleSettingsPassword('newPass', this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;padding:6px;transition:color .2s;width:30px;height:30px;display:flex;align-items:center;justify-content:center" title="Show password">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                  <circle cx="12" cy="12" r="3"></circle>
-                </svg>
+              <input placeholder="Enter new password" type="password" id="newPass" style="padding-right:45px">
+              <button type="button" onclick="toggleSettingsPassword('newPass', this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);padding:6px;width:30px;height:30px;display:flex;align-items:center;justify-content:center" title="Show password">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
               </button>
             </div>
           </div>
-          <button class="btn">Save Password</button>
+          <div class="form-group">
+            <label>Confirm New Password</label>
+            <div style="position:relative">
+              <input placeholder="Confirm new password" type="password" id="confirmPass" style="padding-right:45px">
+              <button type="button" onclick="toggleSettingsPassword('confirmPass', this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);padding:6px;width:30px;height:30px;display:flex;align-items:center;justify-content:center" title="Show password">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              </button>
+            </div>
+          </div>
+          <button class="btn" id="savePasswordBtn" onclick="savePassword()">Save Password</button>
+          <div id="passwordSuccess" class="success-msg">✅ Password changed successfully! Please login again with your new password.</div>
+          <div id="passwordError" class="error-msg"></div>
         </div>
       </div>
     </section>
@@ -184,44 +146,93 @@
   <script>
     const t=()=>localStorage.getItem('lt_admin_token');
     
-    // Password visibility toggle with professional icons
+    // Password visibility toggle
     window.togglePassword = () => {
       const passwordField = document.getElementById('password');
       const toggleBtn = document.getElementById('toggleLoginPass');
-      if (passwordField.type === 'password') {
-        passwordField.type = 'text';
-        toggleBtn.title = 'Hide password';
-        toggleBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-          <line x1="1" y1="1" x2="23" y2="23"></line>
-        </svg>`;
-      } else {
-        passwordField.type = 'password';
-        toggleBtn.title = 'Show password';
-        toggleBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-          <circle cx="12" cy="12" r="3"></circle>
-        </svg>`;
-      }
+      const isHidden = passwordField.type === 'password';
+      passwordField.type = isHidden ? 'text' : 'password';
+      toggleBtn.innerHTML = isHidden 
+        ? `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`
+        : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
     };
     
-    // Password visibility toggle for settings page
     window.toggleSettingsPassword = (fieldId, btn) => {
-      const passwordField = document.getElementById(fieldId);
-      if (passwordField.type === 'password') {
-        passwordField.type = 'text';
-        btn.title = 'Hide password';
-        btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-          <line x1="1" y1="1" x2="23" y2="23"></line>
-        </svg>`;
-      } else {
-        passwordField.type = 'password';
-        btn.title = 'Show password';
-        btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-          <circle cx="12" cy="12" r="3"></circle>
-        </svg>`;
+      const field = document.getElementById(fieldId);
+      const isHidden = field.type === 'password';
+      field.type = isHidden ? 'text' : 'password';
+      btn.innerHTML = isHidden
+        ? `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`
+        : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+    };
+
+    // =============================================
+    // SAVE PASSWORD - FIXED AND WORKING!
+    // =============================================
+    window.savePassword = async () => {
+      const currentPassword = document.getElementById('currentPass').value;
+      const newPassword = document.getElementById('newPass').value;
+      const confirmPassword = document.getElementById('confirmPass').value;
+      const successMsg = document.getElementById('passwordSuccess');
+      const errorMsg = document.getElementById('passwordError');
+      const saveBtn = document.getElementById('savePasswordBtn');
+
+      // Hide previous messages
+      successMsg.style.display = 'none';
+      errorMsg.style.display = 'none';
+
+      // Validation
+      if (!currentPassword) {
+        errorMsg.textContent = '❌ Please enter your current password.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+      if (!newPassword) {
+        errorMsg.textContent = '❌ Please enter a new password.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+      if (newPassword.length < 8) {
+        errorMsg.textContent = '❌ New password must be at least 8 characters long.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+      if (newPassword !== confirmPassword) {
+        errorMsg.textContent = '❌ New password and confirm password do not match!';
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      // Disable button and show loading
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving...';
+
+      try {
+        await API.auth.changePassword({ currentPassword, newPassword });
+        
+        // Show success message
+        successMsg.style.display = 'block';
+        
+        // Clear fields
+        document.getElementById('currentPass').value = '';
+        document.getElementById('newPass').value = '';
+        document.getElementById('confirmPass').value = '';
+
+        // Auto logout after 3 seconds
+        setTimeout(() => {
+          localStorage.removeItem('lt_admin_token');
+          app.classList.add('hidden');
+          login.classList.remove('hidden');
+          email.value = '';
+          password.value = '';
+        }, 3000);
+
+      } catch(e) {
+        errorMsg.textContent = '❌ ' + (e.message || 'Failed to change password. Please check your current password.');
+        errorMsg.style.display = 'block';
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Save Password';
       }
     };
     
@@ -239,7 +250,7 @@
         app.classList.remove('hidden');
         loadAll();
       }catch(e){
-        loginMsg.textContent=e.message
+        loginMsg.textContent=e.message;
       }
     };
 
@@ -256,7 +267,7 @@
 
     async function loadAll(){
       const dash=await API.admin.dashboard().catch(()=>({stats:{totalRevenue:0,totalOrders:0,productsLive:0,pendingShipments:0},revenue7d:[],recentOrders:[],topProducts:[]}));
-      stats.innerHTML=[['Total Revenue',dash.stats.totalRevenue],['Total Orders',dash.stats.totalOrders],['Products Live',dash.stats.productsLive],['Pending Shipments',dash.stats.pendingShipments]].map(s=>`<div class='card'><h3 style='margin:0 0 8px 0;font-size:14px;color:var(--muted)'>${s[0]}</h3><p style='margin:0;font-size:28px;color:var(--gold)'>₹${s[1]}</p></div>`).join('');
+      stats.innerHTML=[['Total Revenue',dash.stats.totalRevenue],['Total Orders',dash.stats.totalOrders],['Products Live',dash.stats.productsLive],['Pending Shipments',dash.stats.pendingShipments]].map(s=>`<div class='card'><h3 style='margin:0 0 8px 0;font-size:14px;color:var(--muted)'>${s[0]}</h3><p style='margin:0;font-size:28px;color:var(--gold)'>${s[0]==='Total Revenue'?'₹':''}${s[1]}</p></div>`).join('');
       chart.innerHTML=dash.revenue7d.map(d=>`<div style='display:flex;align-items:center;gap:8px;margin:8px 0'><small style='min-width:80px'>${d.date}</small><div style='height:12px;background:var(--gold);width:${Math.max(10,d.revenue/100)}px;border-radius:4px'></div><small>₹${d.revenue}</small></div>`).join('');
       recentOrders.innerHTML=dash.recentOrders.map(o=>`<tr><td>${o.orderId}</td><td>${o.customerName}</td><td><span style='background:#2a2a2a;padding:4px 8px;border-radius:4px;font-size:12px'>${o.status}</span></td></tr>`).join('');
       topProducts.innerHTML=dash.topProducts.map(p=>`<tr><td>${p.name}</td><td style='color:var(--gold)'>${p.soldCount}</td></tr>`).join('');
@@ -269,8 +280,8 @@
       statusFilter.onchange=orderSearch.oninput=renderOrders; renderOrders();
 
       const prods=await API.products.list().catch(()=>({products:[]}));
-      window.productsCache = prods.products || prods; // Store products globally
-      productsBody.innerHTML=window.productsCache.map((p, idx)=>`<tr><td><div style='width:40px;font-size:24px'>${p.emoji||'🎨'}</div></td><td>${p.name}</td><td><span style='background:#2a2a2a;padding:4px 8px;border-radius:4px;font-size:12px'>${p.category}</span></td><td style='color:var(--gold)'>₹${p.price}</td><td><input type='checkbox' ${p.inStock?'checked':''} onchange='toggleStock("${p._id}",this.checked)'></td><td><button onclick='editPByIndex(${idx})' class='btn' style='padding:6px 12px;font-size:13px;margin-right:4px'>Edit</button><button onclick='delP("${p._id}")' class='btn-danger btn' style='padding:6px 12px;font-size:13px'>Delete</button></td></tr>`).join('');
+      window.productsCache = prods.products || prods;
+      productsBody.innerHTML=window.productsCache.map((p,idx)=>`<tr><td><div style='width:40px;font-size:24px'>${p.emoji||'🎨'}</div></td><td>${p.name}</td><td><span style='background:#2a2a2a;padding:4px 8px;border-radius:4px;font-size:12px'>${p.category}</span></td><td style='color:var(--gold)'>₹${p.price}</td><td><input type='checkbox' ${p.inStock?'checked':''} onchange='toggleStock("${p._id}",this.checked)'></td><td><button onclick='editPByIndex(${idx})' class='btn' style='padding:6px 12px;font-size:13px;margin-right:4px'>Edit</button><button onclick='delP("${p._id}")' class='btn-danger btn' style='padding:6px 12px;font-size:13px'>Delete</button></td></tr>`).join('');
       window.toggleStock=(id,v)=>API.products.toggleStock(id,v);
       window.delP=async(id)=>{if(confirm('Delete this product?')){await API.products.remove(id);loadAll()}};
       window.editPByIndex=(idx)=>openProductModal(window.productsCache[idx]);

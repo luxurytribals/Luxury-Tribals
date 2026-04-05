@@ -6,6 +6,7 @@ const Product = require('../models/Product');
 const Customer = require('../models/Customer');
 const getRazorpay = require('../utils/razorpay');
 const { createShiprocketShipment } = require('../controllers/shippingController');
+const { sendOrderNotification } = require('../utils/email');
 
 const router = express.Router();
 
@@ -186,11 +187,15 @@ router.post('/verify',
         )
       );
 
+      // Send email notification to admin
+      sendOrderNotification(order).catch((e) => {
+        console.error(`❌ Email notification error for ${order.orderId}:`, e.message);
+      });
+
       // Create Shiprocket shipment asynchronously
       // Don't wait for it - let it run in background
       createShiprocketShipment(order).catch((e) => {
         console.error(`❌ Shiprocket async error for ${order.orderId}:`, e.message);
-        // Error is already logged in the controller
       });
 
       res.json({ 
